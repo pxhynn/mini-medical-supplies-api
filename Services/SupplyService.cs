@@ -13,10 +13,31 @@ public class SupplyService
         new Supply { Id = 4, Name = "Cồn sát trùng 90 độ", Category = "Hóa chất", ExpiryYear = 2026, Quantity = 15 }
     ];
 
-    // Hàm trả về toàn bộ danh sách
-    public List<Supply> GetAll() => _supplies;
+    // [TÍNH NĂNG ĐIỂM CỘNG 1] Hàm lấy danh sách có hỗ trợ tìm kiếm và lọc
+    public List<Supply> GetAll(string? searchName = null, string? category = null)
+    {
+        var result = _supplies.AsQueryable();
 
-    // Hàm tính toán thống kê tổng quan
+        if (!string.IsNullOrEmpty(searchName))
+        {
+            result = result.Where(s => s.Name.Contains(searchName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrEmpty(category))
+        {
+            result = result.Where(s => s.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return result.ToList();
+    }
+
+    // [TÍNH NĂNG ĐIỂM CỘNG 2] Hàm tìm 1 vật tư theo ID
+    public Supply? GetById(int id)
+    {
+        return _supplies.FirstOrDefault(s => s.Id == id);
+    }
+
+    // Hàm tính toán thống kê tổng quan (Giữ nguyên)
     public object GetStats()
     {
         var totalTypes = _supplies.Count;
@@ -31,7 +52,7 @@ public class SupplyService
         };
     }
 
-    // Hàm phân loại trạng thái theo điều kiện số lượng
+    // Hàm phân loại trạng thái theo điều kiện số lượng (Giữ nguyên)
     public string GetStatus(int quantity)
     {
         if (quantity <= 0) return "Out of stock";

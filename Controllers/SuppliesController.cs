@@ -9,17 +9,16 @@ public class SuppliesController : ControllerBase
 {
     private readonly SupplyService _supplyService;
 
-    // Tiêm (Inject) SupplyService vào Controller để sử dụng
     public SuppliesController(SupplyService supplyService)
     {
         _supplyService = supplyService;
     }
 
-    // Endpoint 1: Trả về danh sách vật tư kèm trạng thái (GET /api/supplies)
+    // [TÍNH NĂNG ĐIỂM CỘNG 1] Endpoint: Trả về danh sách (có hỗ trợ tìm kiếm và lọc)
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult GetAll([FromQuery] string? search, [FromQuery] string? category)
     {
-        var supplies = _supplyService.GetAll()
+        var supplies = _supplyService.GetAll(search, category)
             .Select(s => new
             {
                 s.Id,
@@ -27,13 +26,34 @@ public class SuppliesController : ControllerBase
                 s.Category,
                 s.ExpiryYear,
                 s.Quantity,
-                Status = _supplyService.GetStatus(s.Quantity) // Gọi hàm kiểm tra trạng thái từ Service
+                Status = _supplyService.GetStatus(s.Quantity)
             });
             
         return Ok(supplies);
     }
 
-    // Endpoint 2: Trả về thống kê tổng quan (GET /api/supplies/stats)
+    // [TÍNH NĂNG ĐIỂM CỘNG 2] Endpoint: Lấy chi tiết 1 vật tư theo ID (có bắt lỗi 404)
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        var supply = _supplyService.GetById(id);
+        if (supply == null)
+        {
+            return NotFound(new { message = $"Không tìm thấy vật tư y tế với ID = {id}" });
+        }
+
+        return Ok(new
+        {
+            supply.Id,
+            supply.Name,
+            supply.Category,
+            supply.ExpiryYear,
+            supply.Quantity,
+            Status = _supplyService.GetStatus(supply.Quantity)
+        });
+    }
+
+    // Endpoint: Trả về thống kê tổng quan (Giữ nguyên)
     [HttpGet("stats")]
     public IActionResult GetStats()
     {

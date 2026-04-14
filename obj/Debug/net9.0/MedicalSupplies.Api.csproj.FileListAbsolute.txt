@@ -33,3 +33,4 @@ D:\hoc tap\HCMUS\tai lieu tham khao\Nam 4\ASP\MedicalSupplies.Api\obj\Debug\net9
 D:\hoc tap\HCMUS\tai lieu tham khao\Nam 4\ASP\MedicalSupplies.Api\obj\Debug\net9.0\MedicalSupplies.Api.pdb
 D:\hoc tap\HCMUS\tai lieu tham khao\Nam 4\ASP\MedicalSupplies.Api\obj\Debug\net9.0\MedicalSupplies.Api.genruntimeconfig.cache
 D:\hoc tap\HCMUS\tai lieu tham khao\Nam 4\ASP\MedicalSupplies.Api\obj\Debug\net9.0\ref\MedicalSupplies.Api.dll
+D:\hoc tap\HCMUS\tai lieu tham khao\Nam 4\ASP\MedicalSupplies.Api\obj\Debug\net9.0\MedicalSupplies.Api.sourcelink.json
